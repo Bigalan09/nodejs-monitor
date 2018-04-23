@@ -1,7 +1,7 @@
 {
-  "name": "es6-babel-boilerplate",
+  "name": "nodejs-monitor",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=devlop webpack && node dist\\app.js",
@@ -21,7 +21,6 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "brain.js": "^1.1.2",
     "is-reachable": "^2.4.0",
     "moment": "^2.22.1",
     "nodemailer": "^4.6.4",
