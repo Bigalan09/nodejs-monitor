@@ -17,10 +17,9 @@ const mailOptions = {
 // -----------------------------
 
 var sites = [{
-        host: 'google.com',
-        status: []
-    }
-]
+    host: 'google.com',
+    status: []
+}]
 
 function check() {
     let list = [];
@@ -44,14 +43,22 @@ function check() {
                 } else if (!lastButOneStatus.isReachable && lastStatus.isReachable) {
                     let lastUp = null;
                     for (var status of site.status) {
-                        if (status.isReachable) lastUp = status;
+                        if (status.isReachable && status.timestamp != lastStatus.timestamp) lastUp = status;
                     }
                     if (lastUp != null) {
-                        let diff = moment.utc(lastUp.diff(lastStatus.timestamp)).format("HH:mm:ss");
+
+                        let now = lastStatus.timestamp;
+                        let then = lastUp.timestamp;
+
+                        let diff = moment.utc(now.diff(then)).format("HH:mm:ss");
                         report = `${site.host} came back up!<br />Site was down for ${diff}`;
                         status = 'up';
                         shouldMail = true;
                     }
+                } else if (lastButOneStatus.isReachable && !lastStatus.isReachable) {
+                    report = `${site.host} went down!`;
+                    status = 'down';
+                    shouldMail = true;
                 } else {
                     report = `${site.host} did something weird.`;
                 }
@@ -73,7 +80,6 @@ function check() {
             if (shouldMail) {
                 mailer(`${site.host} is ${status}`, `${report}`);
             }
-
         }
     });
 }
